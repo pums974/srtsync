@@ -1,28 +1,32 @@
 # srtsync
-Automatic synchronizer of subtitles based on voice activity in the video
+Automatic synchronizer of subtitles based on video or other subtitle
 
 Largely inspired by [py-webrtcvad](https://github.com/wiseman/py-webrtcvad)
 
 It can only stretch and shift subtitles for now.
 
+The synchronization to another subtitle is less accurate and EXPERIMENTAL
+
 ## Getting Started
 ### Dependencies
  * ffmpeg for audio extraction
  * numpy / scipy for synchronization
- * webrtcvad for voica activity detection
  * pysrt for reading and writing subtitles
+ optionnally
+ * pymediainfo for accurate detection of a video file
+ * webrtcvad for voice activity detection
 
 ### Install
 pip install srtsync
 
 ### Usage
 ```
-usage: srtsync [-h] [-a aggressiveness] video.avi input.srt output.srt
+usage: srtsync [-h] [-a aggressiveness] source input.srt output.srt
 
-Automatic synchronizer of subtitles based on voice activity in the video
+Automatic synchronizer of subtitles based on video or other subtitle
 
 positional arguments:
-  video.avi          path to the video file
+  source             path to the source (a video file or another subtitle)
   input.srt          path to the input subtitles file
   output.srt         path to the output subtitles file
 

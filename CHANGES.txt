@@ -1,3 +1,4 @@
+v1.1.0, 25/12/2018 -- Add the possibility to synchronize to another subtitle (EXPERIMENTAL).
 v1.0.2, 25/12/2018 -- bugfix.
 v1.0.1, 25/12/2018 -- bugfix.
 v1.0.0, 25/12/2018 -- Initial release.

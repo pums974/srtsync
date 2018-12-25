@@ -7,7 +7,11 @@ import collections
 import datetime
 from pathlib import Path
 from tempfile import mkdtemp
-import webrtcvad
+WEBRTCVAD = True
+try:
+    import webrtcvad
+except ModuleNotFoundError:
+    WEBRTCVAD = False
 
 from srtsync.sound import extract as extract_audio
 from srtsync.sound import read_wave
@@ -99,6 +103,10 @@ def vad_collector(sample_rate, frame_duration_ms,
 
 def extract_from_audio(audio, sample_rate, aggressiveness=3):
     """Extract timestamp of voice activity from an audio file"""
+
+    if not WEBRTCVAD:
+        raise ModuleNotFoundError("webrtcvad is necessary for this usage")
+
     vad = webrtcvad.Vad(aggressiveness)
     frames = frame_generator(30, audio, sample_rate)
     return list(vad_collector(sample_rate, 30, 300, vad, frames))
@@ -106,6 +114,9 @@ def extract_from_audio(audio, sample_rate, aggressiveness=3):
 
 def extract_from_video(video, aggressiveness=3):
     """Extract timestamp of voice activity from aa video file"""
+
+    if not WEBRTCVAD:
+        raise ModuleNotFoundError("webrtcvad is necessary for this usage")
 
     tmp_wav = Path(mkdtemp()) / 'tmp.wav'
 
@@ -121,6 +132,9 @@ def extract_from_video(video, aggressiveness=3):
 if __name__ == '__main__':
     import sys
     args = sys.argv[1:]
+
+    if not WEBRTCVAD:
+        raise ModuleNotFoundError("webrtcvad is necessary for this usage")
 
     if len(args) != 2:
         sys.stderr.write('Usage: vad.py <aggressiveness> <path to wav file>\n')

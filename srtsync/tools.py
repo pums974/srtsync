@@ -3,9 +3,18 @@
 """
 Where the magic happens
 """
+from warnings import warn
 import numpy as np
 import scipy
 import scipy.optimize
+MEDIAINFO = True
+try:
+    from pymediainfo import MediaInfo
+except ModuleNotFoundError:
+    MEDIAINFO = False
+    pass
+
+from srtsync import srt
 
 
 def discretize_timestamp(timestamps, stretch=1., chunk=0.1, nelem=None):
@@ -59,10 +68,13 @@ def opt_shift(stretch, disc_voice_activity, srt, chunk=0.1):
 
 def sync(voice_activity, srt, length, chunk=0.1):
     """Sync srt on the voice activity"""
-    finsrt = max(srt, key=lambda x: x[1])[1]
-    startsrt = min(srt, key=lambda x: x[0])[0]
-    lensrt = finsrt - startsrt
-    maxstretch = max(length / lensrt, 1.)
+    if length is not None:
+        finsrt = max(srt, key=lambda x: x[1])[1]
+        startsrt = min(srt, key=lambda x: x[0])[0]
+        lensrt = finsrt - startsrt
+        maxstretch = max(length / lensrt, 1.)
+    else:
+        maxstretch = 1.5
 
     disc_va = discretize_timestamp(voice_activity,
                                    chunk=chunk)
@@ -99,3 +111,25 @@ def sync(voice_activity, srt, length, chunk=0.1):
     shift, _ = opt_shift(stretch, disc_va, srt, chunk=chunk)
 
     return shift, stretch
+
+
+def is_video(file):
+    """test if a file contains an audio track"""
+    if not MEDIAINFO:
+        warn("Assuming source file is a video file")
+        return True
+
+    fileInfo = MediaInfo.parse(file)
+    for track in fileInfo.tracks:
+        if track.track_type == "Audio":
+            return True
+    return False
+
+
+def is_srt(file):
+    """test if a file is a subtitle"""
+    try:
+        srt.read(file)
+        return True
+    except UnicodeDecodeError:
+        return False

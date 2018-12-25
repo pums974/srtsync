@@ -1,34 +1,36 @@
 #!/usr/bin/env python3
 # coding: utf-8
 """
-Automatic synchronizer of subtitles based on voice activity in the video
+Automatic synchronizer of subtitles based on video or other subtitle
 
 Largely inspired by [py-webrtcvad](https://github.com/wiseman/py-webrtcvad)
 """
 import argparse
 from pathlib import Path
 from warnings import warn
+
 from srtsync import extract_voice_activity
 from srtsync import read_srt
 from srtsync import transform_srt
 from srtsync import write_srt
 from srtsync import srt_to_timestamps
 from srtsync import sync
+from srtsync import is_video, is_srt
 
 
 def main():
     """Executable"""
     parser = argparse.ArgumentParser(prog='srtsync',
                                      description="Automatic synchronizer of subtitles"
-                                                 " based on voice activity in the video")
+                                                 " based on video or other subtitle")
+
     parser.add_argument('-a',
                         metavar='aggressiveness',
                         default=3,
                         type=int,
                         help='aggressiveness in voice activity detection')
-    parser.add_argument('video',
-                        metavar='video.avi',
-                        help='path to the video file')
+    parser.add_argument('source',
+                        help='path to a source (a video file or another subtitle)')
     parser.add_argument('input',
                         metavar='input.srt',
                         help='path to the input subtitles file')
@@ -37,20 +39,27 @@ def main():
                         help='path to the output subtitles file')
     args = parser.parse_args()
 
-    videofile = Path(args.video)
-    if not videofile.exists():
-        raise FileNotFoundError("The video file must exists !")
+    sourcefile = Path(args.source)
+    if not sourcefile.exists():
+        raise FileNotFoundError("The source file must exists !")
 
     input_srt = Path(args.input)
-    if not videofile.exists():
+    if not input_srt.exists():
         raise FileNotFoundError("The input subtitles must exists !")
 
     output_srt = Path(args.output)
-    if not videofile.exists():
+    if not output_srt.exists():
         warn("The output subtitle will be overwritten !")
 
-    aggressiveness = args.a
-    voice_activity, length = extract_voice_activity(videofile, aggressiveness=aggressiveness)
+    if is_srt(sourcefile):
+        subs = read_srt(sourcefile)
+        source = srt_to_timestamps(subs)
+        length = None
+    elif is_video(sourcefile):
+        aggressiveness = args.a
+        source, length = extract_voice_activity(sourcefile, aggressiveness=aggressiveness)
+    else:
+        raise ValueError("The source must be a subtitle of a video file !")
 
     subs = read_srt(input_srt)
 
@@ -66,7 +75,7 @@ def main():
 
     srt = srt_to_timestamps(subs)
 
-    shift, stretch = sync(voice_activity, srt, length)
+    shift, stretch = sync(source, srt, length)
     print(f"Shift {shift:.3f} and stretch {stretch:.3f}\n")
 
     subs = transform_srt(subs,

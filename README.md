@@ -34,4 +34,4 @@ optional arguments:
  - **Alexandre Poux**
  
 ## Licence
- TGhis work is released under the GPLv3 - see LICENSE for details
+ This work is released under the GPLv3 - see LICENSE for details

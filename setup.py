@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-
+"""
+Installer for srtsync
+"""
 from setuptools import setup, find_packages
 
 import srtsync
@@ -32,6 +34,7 @@ setup(
             ],
 
         install_requires=['pysrt', 'numpy', 'scipy', 'webrtcvad'],
+        python_requires='>=3.6',
         include_package_data=True,
 
         # C'est un système de plugin, mais on s'en sert presque exclusivement

@@ -15,6 +15,7 @@ from srtsync import write_srt
 from srtsync import srt_to_timestamps
 from srtsync import sync
 
+
 def main():
     """Executable"""
     parser = argparse.ArgumentParser(prog='srtsync',

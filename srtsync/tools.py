@@ -60,7 +60,7 @@ def sync(voice_activity, srt, length, chunk=0.1):
     finsrt = max(srt, key=lambda x: x[1])[1]
     startsrt = min(srt, key=lambda x: x[0])[0]
     lensrt = finsrt - startsrt
-    maxstretch = length / lensrt
+    maxstretch = max(length / lensrt, 1.)
 
     disc_va = discretize_timestamp(voice_activity,
                                    chunk=chunk)

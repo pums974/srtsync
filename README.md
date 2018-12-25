@@ -3,6 +3,8 @@ Automatic synchronizer of subtitles based on voice activity in the video
 
 Largely inspired by [py-webrtcvad](https://github.com/wiseman/py-webrtcvad)
 
+It can only stretch and shift subtitles for now.
+
 ## Getting Started
 ### Dependencies
  * ffmpeg for audio extraction

@@ -1,4 +1,4 @@
-#!/bin/env/python3
+#!/usr/bin/env python3
 # coding: utf-8
 """
 Detect voice activity and return a list of timestamp

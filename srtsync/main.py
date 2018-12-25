@@ -1,4 +1,4 @@
-#!/bin/env/python3
+#!/usr/bin/env python3
 # coding: utf-8
 """
 Automatic synchronizer of subtitles based on voice activity in the video
@@ -15,7 +15,7 @@ from srtsync import write_srt
 from srtsync import srt_to_timestamps
 from srtsync import sync
 
-if __name__ == "__main__":
+def main():
     parser = argparse.ArgumentParser(prog='srtsync',
                                      description="Automatic synchronizer of subtitles"
                                                  " based on voice activity in the video")
@@ -25,10 +25,13 @@ if __name__ == "__main__":
                         type=int,
                         help='aggressiveness in voice activity detection')
     parser.add_argument('video',
+                        metavar='video.avi',
                         help='path to the video file')
     parser.add_argument('input',
+                        metavar='input.srt',
                         help='path to the input subtitles file')
     parser.add_argument('output',
+                        metavar='output.srt',
                         help='path to the output subtitles file')
     args = parser.parse_args()
 
@@ -69,3 +72,6 @@ if __name__ == "__main__":
                          shift=shift)
 
     write_srt(subs, output_srt)
+
+if __name__ == "__main__":
+    main()

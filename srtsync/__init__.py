@@ -1,8 +1,11 @@
-#!/bin/env/python3
+#!/usr/bin/env python3
 # coding: utf-8
 """
 Automatic synchronizer of subtitles based on voice activity in the video
 """
+
+__version__ = "1.0.0"
+
 from srtsync.tools import sync
 from srtsync.sound import extract as extract_audio
 from srtsync.vad import extract_from_video as extract_voice_activity

@@ -12,7 +12,8 @@ The synchronization to another subtitle is less accurate and EXPERIMENTAL
  * ffmpeg for audio extraction
  * numpy / scipy for synchronization
  * pysrt for reading and writing subtitles
- optionnally
+ 
+And optionnally
  * pymediainfo for accurate detection of a video file
  * webrtcvad for voice activity detection
 

@@ -16,6 +16,7 @@ from srtsync import srt_to_timestamps
 from srtsync import sync
 
 def main():
+    """Executable"""
     parser = argparse.ArgumentParser(prog='srtsync',
                                      description="Automatic synchronizer of subtitles"
                                                  " based on voice activity in the video")
@@ -53,7 +54,7 @@ def main():
     subs = read_srt(input_srt)
 
     # For testing purposes
-    if True:
+    if False:
         shift = 15
         stretch = 1.2
         print(f"Adding artifical shift and stretch:\n"
@@ -72,6 +73,7 @@ def main():
                          shift=shift)
 
     write_srt(subs, output_srt)
+
 
 if __name__ == "__main__":
     main()

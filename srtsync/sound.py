@@ -7,7 +7,6 @@ Read wave file
 
 from subprocess import check_call
 from pathlib import Path
-import sys
 import wave
 import datetime
 
@@ -47,6 +46,7 @@ def extract(video, audio):
 
 
 if __name__ == "__main__":
+    import sys
     video_file = sys.argv[1]
     audio_file = sys.argv[2]
 

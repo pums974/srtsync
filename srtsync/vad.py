@@ -4,7 +4,6 @@
 Detect voice activity and return a list of timestamp
 """
 import collections
-import sys
 import datetime
 from pathlib import Path
 from tempfile import mkdtemp
@@ -120,6 +119,7 @@ def extract_from_video(video, aggressiveness=3):
 
 
 if __name__ == '__main__':
+    import sys
     args = sys.argv[1:]
 
     if len(args) != 2:

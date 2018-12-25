@@ -3,7 +3,6 @@
 """
 Where the magic happens
 """
-import sys
 import numpy as np
 import scipy
 import scipy.optimize
@@ -28,7 +27,7 @@ def opt_shift(stretch, disc_voice_activity, srt, chunk=0.1):
     """Find the optimal shift"""
     try:
         if len(stretch) > 1:
-            sys.exit(1)
+            raise ValueError("stretch must be a single value")
         else:
             stretch = stretch[0]
     except TypeError:
@@ -77,16 +76,16 @@ def sync(voice_activity, srt, length, chunk=0.1):
                                                  method='bounded').x
 
     if False:
-        stretch = scipy.optimize.dual_annealing(fopt, bounds=[(0.5, 1.5)]).x
+        stretch = scipy.optimize.dual_annealing(fopt, bounds=[(0.5, maxstretch)]).x
 
     if False:
-        stretch = scipy.optimize.shgo(fopt, bounds=[(0.5, 1.5)]).x
+        stretch = scipy.optimize.shgo(fopt, bounds=[(0.5, maxstretch)]).x
 
     if False:
-        stretch = scipy.optimize.basinhopping(fopt, x0=[1 / 1.2]).x
+        stretch = scipy.optimize.basinhopping(fopt, x0=[1.]).x
 
     if False:
-        for s in np.arange(0.6, 1.6, 0.05):
+        for s in np.arange(0.6, maxstretch, 0.05):
             stretch = fopt(s)
             print(f"stretching {s:.2f} {1/s:.2f} {stretch:.2f}")
 

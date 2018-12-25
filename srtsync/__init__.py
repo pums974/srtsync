@@ -4,7 +4,7 @@
 Automatic synchronizer of subtitles based on voice activity in the video
 """
 
-__version__ = "1.0.1"
+__version__ = "1.0.2"
 
 from srtsync.tools import sync
 from srtsync.sound import extract as extract_audio

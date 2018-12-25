@@ -48,6 +48,8 @@ def opt_shift(stretch, disc_voice_activity, srt, chunk=0.1):
     corr2 = np.abs(scipy.ifft(va_fft * srt_fft_conj))
     shift1 = np.argmax(corr1)
     shift2 = np.argmax(corr2)
+    shift1 = min(shift1, nfft - shift1)
+    shift2 = min(shift2, nfft - shift2)
 
     if corr1[shift1] > corr2[shift2]:
         return -shift1 * chunk, corr1[shift1]
@@ -79,15 +81,20 @@ def sync(voice_activity, srt, length, chunk=0.1):
         stretch = scipy.optimize.dual_annealing(fopt, bounds=[(0.5, maxstretch)]).x
 
     if False:
-        stretch = scipy.optimize.shgo(fopt, bounds=[(0.5, maxstretch)]).x
+        stretch = scipy.optimize.shgo(fopt, bounds=[(0.5, maxstretch)]).x[0]
 
     if False:
         stretch = scipy.optimize.basinhopping(fopt, x0=[1.]).x
 
     if False:
-        for s in np.arange(0.6, maxstretch, 0.05):
-            stretch = fopt(s)
-            print(f"stretching {s:.2f} {1/s:.2f} {stretch:.2f}")
+        stretch = None
+        best_corr = - np.inf
+        for s in np.arange(0.6, maxstretch + 0.05, 0.05):
+            shift, coef_correl = opt_shift(s, disc_va, srt, chunk=chunk)
+            print(f"stretching {s:.2f} {1/s:.2f} {shift:.0f} ({coef_correl:.2f})")
+            if coef_correl > best_corr:
+                stretch = s
+                best_corr = coef_correl
 
     shift, _ = opt_shift(stretch, disc_va, srt, chunk=chunk)
 

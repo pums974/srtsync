@@ -9,6 +9,7 @@ The synchronization to another subtitle is less accurate and EXPERIMENTAL
 
 ## Getting Started
 ### Dependencies
+ * python 3.6+ (f-string)
  * ffmpeg for audio extraction
  * numpy / scipy for synchronization
  * pysrt for reading and writing subtitles

@@ -28,7 +28,8 @@ def main():
                         metavar='aggressiveness',
                         default=3,
                         type=int,
-                        help='aggressiveness in voice activity detection')
+                        choices=range(0, 4),
+                        help='sensibility in voice activity detection default=3')
     parser.add_argument('source',
                         help='path to a source (a video file or another subtitle)')
     parser.add_argument('input',

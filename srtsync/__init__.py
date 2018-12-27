@@ -6,6 +6,10 @@ Automatic synchronizer of subtitles based on video or other subtitle
 
 __version__ = "1.1.0"
 
+import sys
+if sys.version_info < (3, 6):
+    raise "must use python 3.6 or greater"
+
 from srtsync.tools import sync
 from srtsync.tools import is_video, is_srt
 from srtsync.sound import extract as extract_audio

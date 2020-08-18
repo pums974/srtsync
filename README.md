@@ -1,6 +1,7 @@
 # Abandonned project
 
 This project was just a Proof of Concept, and is not maintained anymore.
+
 The project [ffsubsync](https://github.com/smacke/ffsubsync) does the same thing but better.
 (Also, I think my project largely inspired this one)
 

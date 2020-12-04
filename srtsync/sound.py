@@ -38,7 +38,7 @@ def extract(video, audio):
         audio = Path(audio)
 
     command = ("ffmpeg -loglevel panic -i".split() + [str(video)] +
-               "-ab 160k -ac 1 -ar 48000 -vn".split() + [audio])
+               "-ab 160k -ac 1 -ar 48000 -vn".split() + [str(audio)])
     print("Extracting audio...")
     check_call(command)
 

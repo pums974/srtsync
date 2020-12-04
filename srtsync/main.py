@@ -52,13 +52,13 @@ def main():
     if not output_srt.exists():
         warn("The output subtitle will be overwritten !")
 
-    if is_srt(sourcefile):
+    if is_video(sourcefile):
+        aggressiveness = args.a
+        source, length = extract_voice_activity(sourcefile, aggressiveness=aggressiveness)
+    elif is_srt(sourcefile):
         subs = read_srt(sourcefile)
         source = srt_to_timestamps(subs)
         length = None
-    elif is_video(sourcefile):
-        aggressiveness = args.a
-        source, length = extract_voice_activity(sourcefile, aggressiveness=aggressiveness)
     else:
         raise ValueError("The source must be a subtitle of a video file !")
 
